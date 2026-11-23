@@ -1,0 +1,2 @@
+# PrognozaPogodyCPP
+Cpp Projekt
