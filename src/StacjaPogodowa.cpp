@@ -1,4 +1,5 @@
 #include "../include/StacjaPogodowa.h"
+#include "../include/WyjatekPogodowy.h"
 #include <iostream>
 #include <algorithm>
 
@@ -8,19 +9,31 @@ StacjaPogodowa::StacjaPogodowa(const string& nazwa):nazwaStacji(nazwa){}
 
 void StacjaPogodowa::dodajProgonze(const shared_ptr<PrognozaPogody>& prognoza)
 {
-    for(const auto& element: prognozy){}
+    for(const auto& element: prognozy)
+    {
+        if (*element == *prognoza)
+        {
+            throw WyjatekPogodowy("Prognoza dla tego miasta i daty juz istnieje w bazie!");
+        }
+    }
     prognozy.push_back(prognoza);
-
-
 }
 
 void StacjaPogodowa::usunPrognoze(size_t indeks)
 {
+    if (indeks >= prognozy.size())
+    {
+        throw WyjatekPogodowy("Nieprawidlowy indeks elementu do usuniecia!");
+    }
     prognozy.erase(prognozy.begin() + indeks);
 }
 
 void StacjaPogodowa::aktualizujTemperature(size_t indeks, double nowaTemperatura)
 {
+    if (indeks >= prognozy.size())
+    {
+        throw WyjatekPogodowy("Nieprawidlowy indeks prognozy!");
+    }
     prognozy[indeks]->ustawTemperature(nowaTemperatura);
 }
 
