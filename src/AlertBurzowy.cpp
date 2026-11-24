@@ -1,4 +1,5 @@
 #include "../include/AlertBurzowy.h"
+#include "../include/WyjatekPogodowy.h"
 
 using namespace std;
 
@@ -12,6 +13,10 @@ AlertBurzowy::AlertBurzowy(const string& miasto, const string& data, double temp
 int AlertBurzowy::pobierzStopienZagrozenia() const { return stopienZagrozenia; }
 void AlertBurzowy::ustawStopienZagrozenia(int stopien)
 {
+    if (stopien < 1 || stopien > 3)
+    {
+        throw WyjatekPogodowy("Stopien zagrozenia musi wynosic 1, 2 lub 3!");
+    }
     stopienZagrozenia = stopien;
 }
 
