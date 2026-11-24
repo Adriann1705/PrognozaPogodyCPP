@@ -1,4 +1,5 @@
 #include "../include/PrognozaPogody.h"
+#include "../include/WyjatekPogodowy.h"
 #include <iomanip>
 
 using namespace std;
@@ -16,28 +17,48 @@ PrognozaPogody::PrognozaPogody(const string& miasto, const string& data, double 
 PrognozaPogody::~PrognozaPogody(){}
 
 string PrognozaPogody::pobierzMiasto() const{return miasto;}
-string PrognozaPogody::pobierzMiasto() const{return data;}
+string PrognozaPogody::pobierzDate() const{return data;}
 double PrognozaPogody::pobierzTemperature() const{return temperatura;}
 int PrognozaPogody::pobierzWilgotnosc() const{return wilgotnosc;}
 
-void PrognozaPogody::ustawMiasto(const string& nowaData)
+void PrognozaPogody::ustawMiasto(const string& noweMiasto)
 {
-    data = nowaData;
+    if (noweMiasto.empty())
+    {
+        throw WyjatekPogodowy("Nazwa miasta nie moze byc pusta!");
+    }
+    miasto = noweMiasto;
 }
 
 void PrognozaPogody::ustawDate(const string& nowaData)
 {
+    if (nowaData.empty())
+    {
+        throw WyjatekPogodowy("Data nie moze byc pusta!");
+    }
     data = nowaData;
 }
 
 void PrognozaPogody::ustawTemperature(double nowaTemperatura)
 {
+    if (nowaTemperatura < -273.15 || nowaTemperatura > 70.0)
+    {
+        throw WyjatekPogodowy("Nieprawidlowa temperatura! Dopuszczalny zakres: -273.15 C do 70.0 C.");
+    }
     temperatura = nowaTemperatura;
 }
 
 void PrognozaPogody::ustawWilgotnosc(int nowaWilgotnosc)
 {
+    if (nowaWilgotnosc < 0 || nowaWilgotnosc > 100)
+    {
+        throw WyjatekPogodowy("Wilgotnosc musi miescic sie w przedziale 0-100%!");
+    }
     wilgotnosc = nowaWilgotnosc;
+}
+
+bool PrognozaPogody::operator==(const PrognozaPogody& inna) const {
+    return (this->miasto == inna.miasto && this->data == inna.data);
 }
 
 bool PrognozaPogody::operator<(const PrognozaPogody& inna) const{
