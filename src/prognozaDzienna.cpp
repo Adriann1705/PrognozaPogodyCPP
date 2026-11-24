@@ -1,4 +1,5 @@
 #include "../include/PrognozaDzienna.h"
+#include "../include/WyjatekPogodowy.h"
 #include <iostream>
 
 using namespace std;
@@ -15,6 +16,10 @@ double PrognozaDzienna::pobierzPredkoscWiatru() const { return predkoscWiatru; }
 
 void PrognozaDzienna::ustawPredkoscWiatru(double predkosc)
 {
+    if (predkosc < 0.0)
+    {
+        throw WyjatekPogodowy("Predkosc wiatru nie moze byc ujemna!");
+    }
     predkoscWiatru = predkosc;
 }
 
